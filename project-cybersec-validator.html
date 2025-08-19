@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec Protocol Validator - Prototype</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #000000;
+            color: #FF0000;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><text x="0" y="14" font-family="monospace" font-size="14" fill="%23FF0000">_</text></svg>') 8 8, auto;
+        }
+
+        .matrix-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255,0,0,0.05),
+                rgba(255,0,0,0.05) 1px,
+                transparent 1px,
+                transparent 2px
+            ), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23FF0000" opacity="0.02"><rect width="100" height="100" fill="%23000000"/><path d="M 0 0 L 100 100 M 100 0 L 0 100" stroke="%23FF0000" stroke-width="1"/></svg>');
+            background-size: 100% 100%, 20px 20px;
+            animation: matrixFlow 10s linear infinite;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        @keyframes matrixFlow {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 0 100%, 100% 100%; }
+        }
+
+        .terminal-container {
+            width: 90%;
+            max-width: 1000px;
+            height: 90vh;
+            margin: 5vh auto;
+            border: 2px solid #FF0000;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .terminal-header {
+            background-color: #FF0000;
+            color: #000000;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-header .controls span {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .terminal-header .controls .close { background-color: #FF4500; }
+        .terminal-header .controls .minimize { background-color: #FFD700; }
+        .terminal-header .controls .maximize { background-color: #00FF00; }
+
+        .terminal-output {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 1.1em;
+            line-height: 1.4;
+            color: #FF0000;
+            position: relative;
+        }
+
+        .terminal-output::after {
+            content: '_';
+            animation: blink-caret .75s step-end infinite;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            padding: 10px 20px;
+            border-top: 1px solid rgba(255, 0, 0, 0.3);
+        }
+
+        .terminal-input-line span {
+            color: #FFD700; /* Gold for prompt */
+            margin-right: 5px;
+        }
+
+        .terminal-input {
+            background: none;
+            border: none;
+            color: #FF0000;
+            flex-grow: 1;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1.1em;
+            outline: none;
+            caret-color: #FF0000;
+        }
+
+        .interactive-button {
+            background-color: #FF0000;
+            color: #000000;
+            border: 1px solid #FF0000;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .interactive-button:hover {
+            background-color: #000000;
+            color: #FF0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #FF0000;
+            color: #000000;
+            border: 2px solid #FF0000;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #000000;
+            color: #FF0000;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.9);
+        }
+
+        /* Typing animation for output */
+        .typing-text {
+            overflow: hidden;
+            white-space: pre-wrap;
+            border-right: .15em solid transparent; /* Initial transparent caret */
+            animation: typing-output 0s steps(1, end) forwards; /* Will be set by JS */
+        }
+
+        @keyframes typing-output {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #FF0000; }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-background"></div>
+    <a href="index.html" class="back-button" onclick="playButtonClickSound()">← BACK TO PORTFOLIO</a>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <span>CyberSec Protocol Validator // Advanced Threat Assessment (Bank BRI - PT. Lawencon Internasional)</span>
+            <div class="controls">
+                <span class="minimize"></span>
+                <span class="maximize"></span>
+                <span class="close" onclick="window.location.href='index.html'"></span>
+            </div>
+        </div>
+        <div class="terminal-output" id="terminalOutput">
+            <span class="typing-text" id="initialOutput">
+                &gt; [ENGAGE] CyberSec Validator v5.1... [STATUS: ACTIVE]
+                &gt; [LOAD] Threat Intelligence Feeds (Real-time)... [STATUS: SYNCED]
+                &gt; [INIT] Deep Packet Inspection Engine... [STATUS: ONLINE]
+                &gt; [CONFIG] Security Policy: Zero Trust Enforcement... [STATUS: ACTIVE]
+                &gt; [LOG] Advanced Threat Assessment Protocol Engaged.
+                &gt;
+                &gt; Type 'help' for commands or 'initiate_scan' to begin.
+            </span>
+        </div>
+        <div class="terminal-input-line">
+            <span>sec-ops@cybersec:~#</span>
+            <input type="text" class="terminal-input" id="terminalInput" autofocus>
+        </div>
+    </div>
+
+    <!-- Audio Elements for Prototype Page -->
+    <audio id="typingSound" src="audio/typing.mp3" preload="auto"></audio>
+    <audio id="accessGrantedSound" src="audio/access_granted.mp3" preload="auto"></audio>
+    <audio id="accessDeniedSound" src="audio/access_denied.mp3" preload="auto"></audio>
+    <audio id="scanSound" src="audio/scan.mp3" preload="auto"></audio>
+    <audio id="alertSound" src="audio/alert.mp3" preload="auto"></audio>
+    <audio id="successSound" src="audio/success.mp3" preload="auto"></audio>
+    <audio id="buttonClickSound" src="audio/button_click.mp3" preload="auto"></audio>
+    <audio id="dataTransferSound" src="audio/data_transfer.mp3" preload="auto"></audio>
+
+
+    <script>
+        const terminalOutput = document.getElementById('terminalOutput');
+        const terminalInput = document.getElementById('terminalInput');
+        const initialOutputSpan = document.getElementById('initialOutput');
+
+        // Audio elements
+        const typingSound = document.getElementById('typingSound');
+        const accessGrantedSound = document.getElementById('accessGrantedSound');
+        const accessDeniedSound = document.getElementById('accessDeniedSound');
+        const scanSound = document.getElementById('scanSound');
+        const alertSound = document.getElementById('alertSound');
+        const successSound = document.getElementById('successSound');
+        const buttonClickSound = document.getElementById('buttonClickSound');
+        const dataTransferSound = document.getElementById('dataTransferSound');
+
+        function playSound(audioElement) {
+            if (audioElement) {
+                audioElement.currentTime = 0;
+                audioElement.play().catch(e => console.log("Audio play failed:", e));
+            }
+        }
+
+        function playButtonClickSound() {
+            playSound(buttonClickSound);
+        }
+
+        // Simulate typing effect
+        function typeText(element, text, speed = 30, callback) {
+            let i = 0;
+            element.textContent = '';
+            playSound(typingSound);
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    typingSound.pause();
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+
+        // Initial output typing
+        document.addEventListener('DOMContentLoaded', () => {
+            const textToType = initialOutputSpan.textContent;
+            initialOutputSpan.textContent = '';
+            typeText(initialOutputSpan, textToType, 20, () => {
+                terminalInput.focus();
+            });
+        });
+
+        terminalInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const command = terminalInput.value.trim();
+                terminalInput.value = '';
+                processCommand(command);
+            }
+        });
+
+        async function appendOutput(text, isCommand = false) {
+            const newSpan = document.createElement('span');
+            newSpan.className = 'typing-text';
+            if (isCommand) {
+                newSpan.textContent = `sec-ops@cybersec:~# ${text}\n`;
+            } else {
+                newSpan.textContent = text + '\n';
+            }
+            terminalOutput.appendChild(newSpan);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            await new Promise(resolve => typeText(newSpan, textToType, 10, resolve));
+        }
+
+        async function processCommand(command) {
+            await appendOutput(command, true);
+
+            switch (command.toLowerCase()) {
+                case 'help':
+                    await appendOutput(`
+                        Available Commands:
+                        - initiate_scan: Begins a comprehensive network security scan.
+                        - validate_protocols [protocol]: Validates specific network protocols (e.g., 'TLS', 'SSH').
+                        - check_vulnerabilities: Scans for known vulnerabilities in system components.
+                        - generate_compliance_report [standard]: Generates a compliance report (e.g., 'ISO27001', 'GDPR').
+                        - clear: Clears the terminal screen.
+                        - exit: Returns to portfolio overview.
+                    `);
+                    break;
+                case 'initiate_scan':
+                    playSound(scanSound);
+                    await appendOutput(`
+                        &gt; [SCAN] Initiating Comprehensive Network Security Scan...
+                        &gt; [PHASE 1/3] Port Scanning & Service Enumeration... [STATUS: 30% COMPLETE]
+                        &gt; [PHASE 2/3] Vulnerability Assessment & Exploit Detection... [STATUS: 70% COMPLETE]
+                        &gt; [PHASE 3/3] Configuration Audit & Policy Enforcement... [STATUS: 100% COMPLETE]
+                        &gt; [SCAN] Scan Complete. No critical threats detected.
+                        &gt; [REPORT] Minor misconfigurations found in non-critical services.
+                    `);
+                    playSound(successSound);
+                    break;
+                case 'validate_protocols':
+                    await appendOutput(`
+                        &gt; [ERROR] Usage: validate_protocols [protocol]. Available protocols: 'TLS', 'SSH', 'DNS'.
+                    `);
+                    playSound(alertSound);
+                    break;
+                case 'validate_protocols tls':
+                    playSound(dataTransferSound);
+                    await appendOutput(`
+                        &gt; [VALIDATE] TLS Protocol Validation (TLS 1.2 & 1.3)...
+                        &gt;   - Cipher Suites: Strong (AES-256-GCM)
+                        &gt;   - Certificate Chain: Valid
+                        &gt;   - Handshake Integrity: Secure
+                        &gt; [STATUS] TLS Protocol: SECURE.
+                    `);
+                    playSound(successSound);
+                    break;
+                case 'check_vulnerabilities':
+                    playSound(scanSound);
+                    await appendOutput(`
+                        &gt; [VULN] Scanning for Known Vulnerabilities (CVE Database Integration)...
+                        &gt; [SCAN] Operating System Components... [STATUS: CLEAN]
+                        &gt; [SCAN] Application Dependencies... [STATUS: CLEAN]
+                        &gt; [REPORT] No critical or high-severity vulnerabilities detected.
+                    `);
+                    playSound(successSound);
+                    break;
+                case 'generate_compliance_report':
+                    await appendOutput(`
+                        &gt; [ERROR] Usage: generate_compliance_report [standard]. Available standards: 'ISO27001', 'GDPR', 'PCI-DSS'.
+                    `);
+                    playSound(alertSound);
+                    break;
+                case 'generate_compliance_report iso27001':
+                    playSound(dataTransferSound);
+                    await appendOutput(`
+                        &gt; [REPORT] Generating ISO 27001 Compliance Report...
+                        &gt;   - A.5 Information Security Policies: Compliant
+                        &gt;   - A.6 Organization of Information Security: Compliant
+                        &gt;   - A.9 Access Control: Compliant
+                        &gt;   - A.14 System Acquisition, Development and Maintenance: Compliant
+                        &gt; [STATUS] ISO 27001 Compliance: 98% (Minor recommendations for improvement).
+                    `);
+                    playSound(successSound);
+                    break;
+                case 'clear':
+                    terminalOutput.innerHTML = '';
+                    break;
+                case 'exit':
+                    playSound(buttonClickSound);
+                    window.location.href = 'index.html';
+                    break;
+                default:
+                    await appendOutput(`
+                        &gt; [ERROR] Command not recognized: '${command}'. Type 'help' for a list of commands.
+                    `);
+                    playSound(accessDeniedSound);
+            }
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+    </script>
+</body>
+</html>

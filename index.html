@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DINANDA DIADESKA DIARA - Elite IT Architect</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Consolas', 'Monaco', monospace; /* Monospace font for code/hack theme */
+            background-color: #000000; /* Pure Black */
+            color: #FF0000; /* Pure Red */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><text x="0" y="14" font-family="monospace" font-size="14" fill="%23FF0000">_</text></svg>') 8 8, auto; /* Custom cursor */
+        }
+
+        a {
+            color: #FF0000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #FF4500; /* Slightly brighter red on hover */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,0,0,0.1) 0%, rgba(0,0,0,0) 70%);
+            animation: pulse 5s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.5; }
+            to { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #FF0000;
+            animation: glitch 1s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0 0 10px #FF0000; transform: translate(0, 0); }
+            20% { text-shadow: 2px -2px 10px #FF0000; transform: translate(-2px, 2px); }
+            40% { text-shadow: -2px 2px 10px #FF0000; transform: translate(2px, -2px); }
+            60% { text-shadow: 1px 1px 10px #FF0000; transform: translate(-1px, -1px); }
+            80% { text-shadow: -1px -1px 10px #FF0000; transform: translate(1px, 1px); }
+            100% { text-shadow: 0 0 10px #FF0000; transform: translate(0, 0); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #FF0000;
+            margin-bottom: 20px;
+            animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: .15em solid #FF0000;
+            width: 0;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #FF0000; }
+        }
+
+        .contact-info {
+            font-size: 0.9em;
+            color: #FF0000;
+        }
+
+        .contact-info a {
+            margin: 0 5px;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 60px 20px;
+            border-top: 1px solid rgba(255, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            z-index: 0;
+        }
+
+        section h2 {
+            font-size: 2.5em;
+            color: #FF0000;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 8px #FF0000;
+            position: relative;
+            z-index: 1;
+        }
+
+        section h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #FF0000;
+            margin: 10px auto 0;
+            box-shadow: 0 0 5px #FF0000;
+        }
+
+        .section-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Professional Summary */
+        .summary-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: justify;
+            color: #FF0000;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px dashed rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Work Experience & Education */
+        .experience-item, .education-item {
+            background-color: rgba(255, 0, 0, 0.05);
+            border-left: 3px solid #FF0000;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .experience-item:hover, .education-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+
+        .experience-item h3, .education-item h3 {
+            color: #FF0000;
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.4em;
+        }
+
+        .experience-item p, .education-item p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #FF0000;
+        }
+
+        .experience-item ul, .education-item ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .experience-item ul li::before, .education-item ul li::before {
+            content: '>';
+            color: #FF0000;
+            margin-right: 8px;
+        }
+
+        .technologies {
+            font-style: italic;
+            font-size: 0.85em;
+            margin-top: 10px;
+            color: #FF0000;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background-color: rgba(255, 0, 0, 0.05);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+
+        .skill-category h3 {
+            color: #FF0000;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .skill-category ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .skill-category ul li {
+            margin-bottom: 8px;
+            color: #FF0000;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .skill-category ul li::before {
+            content: '//';
+            color: #FF0000;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Certifications */
+        .certifications-list {
+            list-style: none;
+            padding: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .certifications-list li {
+            background-color: rgba(255, 0, 0, 0.05);
+            border-left: 2px solid #FF0000;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+            color: #FF0000;
+            transition: background-color 0.3s ease;
+        }
+
+        .certifications-list li:hover {
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+
+        /* Project Showcase */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background-color: rgba(255, 0, 0, 0.08);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,0,0,0.1) 0%, rgba(0,0,0,0) 70%);
+            transform: rotate(45deg);
+            animation: scanline 3s infinite linear;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        @keyframes scanline {
+            0% { transform: translate(-50%, -50%) rotate(45deg); }
+            100% { transform: translate(50%, 50%) rotate(45deg); }
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+        }
+
+        .project-card h3 {
+            color: #FF0000;
+            margin-top: 0;
+            font-size: 1.5em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-card p {
+            color: #FF0000;
+            font-size: 0.9em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255, 0, 0, 0.2);
+            font-size: 0.8em;
+            color: #FF0000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(255,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            z-index: 0;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Initial Overlay for Audio Playback */
+        #audio-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: #FF0000;
+            font-size: 1.5em;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        #audio-overlay button {
+            background-color: #FF0000;
+            color: #000000;
+            border: 2px solid #FF0000;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #audio-overlay button:hover {
+            background-color: #000000;
+            color: #FF0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            .subtitle {
+                font-size: 1.2em;
+            }
+            section h2 {
+                font-size: 2em;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Initial Overlay for Audio Playback -->
+    <div id="audio-overlay">
+        <p>SYSTEM BOOT SEQUENCE INITIATED...</p>
+        <p>ACCESSING SECURE PORTFOLIO INTERFACE...</p>
+        <button id="enter-button">ENTER SYSTEM</button>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="systemBootSound" src="audio/system_boot.mp3" preload="auto"></audio>
+    <audio id="typingSound" src="audio/typing.mp3" preload="auto"></audio>
+    <audio id="glitchSound" src="audio/glitch.mp3" preload="auto" loop></audio>
+    <audio id="buttonClickSound" src="audio/button_click.mp3" preload="auto"></audio>
+
+    <header>
+        <div class="header-content">
+            <h1>DINANDA DIADESKA DIARA</h1>
+            <p class="subtitle">Senior Front-End Architect | Elite QA Strategist</p>
+            <p class="contact-info">
+                Jakarta, Indonesia |
+                <a href="mailto:deskaliem@gmail.com" onclick="playButtonClickSound()">deskaliem@gmail.com</a> |
+                <a href="https://wa.me/6285156754802" target="_blank" onclick="playButtonClickSound()">+62-851-5675-4802</a>
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <section id="summary">
+            <h2>PROFESSIONAL SUMMARY: SYSTEM OVERVIEW</h2>
+            <div class="section-content">
+                <p class="summary-text">
+                    Innovative yet grounded Senior Front-End Developer & Senior QA Engineer with 8+ years of
+                    proven success delivering high-impact IT solutions across gaming, fin-tech, core banking, and
+                    enterprise SaaS. Expert in crafting immersive, high-performance user interfaces in Luau, React,
+                    and modern web frameworks, and leading end-to-end QA strategies that improve quality,
+                    reduce defects, and accelerate go-to-market timelines. Adept at orchestrating international
+                    product launches and building automation frameworks that cut testing cycles by up to 45%, all
+                    while ensuring zero-downtime deployments. Recognized for combining technical mastery with
+                    empathetic leadership, empowering diverse teams to consistently exceed expectations and deliver
+                    meaningful, user-focused innovations.
+                </p>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2>WORK EXPERIENCE: DEPLOYMENT LOGS</h2>
+            <div class="section-content">
+                <div class="experience-item">
+                    <h3>SENIOR FRONT-END DEVELOPER, ROBLOX CORPORATION (REMOTE)</h3>
+                    <p>San Mateo, California | Aug 2025 – Present</p>
+                    <p><strong>Scope:</strong> Developing immersive, interactive front-end experiences for Roblox games and events used by 40M+ daily active users worldwide.</p>
+                    <p><strong>Key Projects:</strong></p>
+                    <ul>
+                        <li>Dynamic Loading Screen UI: Designed and scripted an animated loading interface in Luau that directly synced with asset load states, increasing user satisfaction with perceived load time by 15%.</li>
+                        <li>Event Hub Revamp: Led front-end redesign for live event dashboards, integrating real-time APIs for leader-boards, rewards, and progress tracking.</li>
+                        <li>UI Optimization Framework: Refactored UI libraries to modular components, reducing code redundancy by 20% and improving rendering speed.</li>
+                    </ul>
+                    <p><strong>Achievements:</strong></p>
+                    <ul>
+                        <li>Delivered high-performance cross-platform UI for PC, mobile, and console users without visual or functional compromise.</li>
+                        <li>Established reusable UI style guide adopted across multiple Roblox development teams.</li>
+                    </ul>
+                    <p class="technologies"><strong>Technologies:</strong> Luau (Roblox Lua), Roblox Studio, API Integration, Git, Agile/Scrum</p>
+                </div>
+
+                <div class="experience-item">
+                    <h3>SENIOR QUALITY ASSURANCE ENGINEER, TOMPS (TELKOM INDONESIA)</h3>
+                    <p>Jakarta, Indonesia | Jan 2023 – May 2025</p>
+                    <p><strong>Scope:</strong> Led QA strategy, automation, and execution for TOMPS, a SaaS platform enabling asset and project monitoring for enterprises and government agencies.</p>
+                    <p><strong>Key Projects:</strong></p>
+                    <ul>
+                        <li>TOMPS Asset Module 2024: Validated GPS-based asset tracking used by 65+ SOEs, enabling real-time visibility and geofencing alerts.</li>
+                        <li>Government KPI Dashboard: Tested analytic dashboards delivering live national infrastructure KPIs, achieving zero post-launch critical defects.</li>
+                        <li>Regression Automation Suite: Built Selenium-based regression automation integrated into CI/CD pipelines, cutting testing cycles by 45%.</li>
+                    </ul>
+                    <p><strong>Achievements:</strong></p>
+                    <ul>
+                        <li>Maintained platform uptime at 99.8% SLA through proactive testing.</li>
+                        <li>Reduced manual testing workload by 40% while increasing coverage.</li>
+                        <li>Created internal QA standards and trained junior engineers, improving team output quality.</li>
+                    </ul>
+                    <p class="technologies"><strong>Technologies:</strong> Selenium, Postman, JMeter, SQL, Jenkins, Jira, Confluence, Agile/Scrum</p>
+                </div>
+
+                <div class="experience-item">
+                    <h3>QUALITY ASSURANCE ENGINEER, KREDIVO (FINACCEL)</h3>
+                    <p>Jakarta, Indonesia | Jan 2020 – Dec 2022</p>
+                    <p><strong>Scope:</strong> Ensured high-quality product delivery for Kredivo’s core platform and its market expansion to Vietnam and the Philippines.</p>
+                    <p><strong>Key Projects:</strong></p>
+                    <ul>
+                        <li>Vietnam & Philippines Launch: Conducted functional, regression, and localization testing to ensure smooth cross-border deployment.</li>
+                        <li>POS Merchant Integration: Verified payment processing workflows for 20+ partner merchants.</li>
+                        <li>International Expansion Task Force: Selected as QA representative for high-priority, multi-country roll-out projects.</li>
+                    </ul>
+                    <p><strong>Achievements:</strong></p>
+                    <ul>
+                        <li>Maintained platform uptime at 99.8% SLA through proactive testing.</li>
+                        <li>Achieved <1% defect leakage during production launches.</li>
+                        <li>Accelerated bug triage and resolution by 25% through improved workflow.</li>
+                    </ul>
+                    <p class="technologies"><strong>Technologies:</strong> Selenium, Appium, Postman, SQL, Jira, Agile/Scrum</p>
+                </div>
+
+                <div class="experience-item">
+                    <h3>QUALITY ASSURANCE ANALYST, BANK BRI (PT. LAWENCON INTERNASIONAL)</h3>
+                    <p>Jakarta, Indonesia | Jan 2019 – Dec 2019</p>
+                    <p><strong>Scope:</strong> Led QA for BRI’s migration of core banking systems to a new architecture for Singapore operations, ensuring compliance with Monetary Authority of Singapore (MAS) regulations.</p>
+                    <p><strong>Key Projects:</strong></p>
+                    <ul>
+                        <li>Validated 100+ interconnected modules across deposits, loans, payments, treasury, and customer on-boarding.</li>
+                        <li>Performed load testing simulating 10,000+ TPS to ensure scalability under peak demand.</li>
+                        <li>Coordinated UAT with Singapore stakeholders for sign-off and compliance checks.</li>
+                    </ul>
+                    <p><strong>Achievements:</strong></p>
+                    <ul>
+                        <li>Delivered zero downtime go-live.</li>
+                        <li>Prevented potential outages by identifying 15+ critical pre-production defects.</li>
+                        <li>Reduced defect resolution cycle by 20%.</li>
+                    </ul>
+                    <p class="technologies"><strong>Technologies:</strong> Oracle SQL, HP ALM, JIRA, JMeter, SOAP UI, Agile/Scrum</p>
+                </div>
+
+                <div class="experience-item">
+                    <h3>IT PROGRAMMER, PT. NUSANTARA SURYA CIPTADANA</h3>
+                    <p>Jakarta, Indonesia | Jan 2017 – Dec 2018</p>
+                    <p><strong>Scope:</strong> Developed and maintained internal applications to streamline business operations for a national trading & distribution company.</p>
+                    <p><strong>Key Projects:</p>
+                    <ul>
+                        <li>Built real-time Sales & Inventory Dashboard improving decision-making speed by 20%.</li>
+                        <li>Developed ERP modules for procurement, finance, and HR with automated reporting scripts, reducing manual entry by 40%.</li>
+                        <li>Integrated AES encryption to safeguard sensitive corporate data.</li>
+                    </ul>
+                    <p><strong>Achievements:</strong></p>
+                    <ul>
+                        <li>Reduced inventory discrepancies by 35%.</li>
+                        <li>Ensured 100% uptime for mission-critical applications.</li>
+                    </ul>
+                    <p class="technologies"><strong>Technologies:</strong> PHP, MySQL, HTML/CSS, JavaScript, AES Encryption, Jenkins, Git</p>
+                </div>
+
+                <div class="experience-item">
+                    <h3>ENGLISH TRANSLATOR, GOLDEN ENGLISH</h3>
+                    <p>Jakarta, Indonesia | Jan 2016 – Dec 2016</p>
+                    <p><strong>Scope:</strong> Provided high-accuracy translation and localization for technical and legal documents.</p>
+                    <p><strong>Key Projects:</strong></p>
+                    <ul>
+                        <li>Delivered 200+ English ↔ Indonesian translations in legal, educational, and technical fields.</li>
+                        <li>Streamlined translation workflows reducing delivery time by 15%.</li>
+                    </ul>
+                    <p><strong>Achievements:</strong></p>
+                    <ul>
+                        <li>Maintained 99% client satisfaction rate.</li>
+                    </ul>
+                    <p class="technologies"><strong>Technologies:</strong> Microsoft Office, SDL Trados, CAT Tools</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>EDUCATION: KNOWLEDGE ACQUISITION LOGS</h2>
+            <div class="section-content">
+                <div class="education-item">
+                    <h3>Master of Social Sciences, International Relations</h3>
+                    <p>Paramadina University, Jakarta | Graduated: 2022 | GPA: 3.36/4.00</p>
+                    <ul>
+                        <li><strong>Thesis:</strong> Indonesia’s Diplomatic Efforts Toward China: A Case Study on the Exploitation of Indonesian Seafarers in the Chinese Fishing Industry (2017 – 2020).</li>
+                        <li><strong>Approach:</strong> Employed a mixed-method research design combining qualitative stakeholder interviews with quantitative maritime labor data analysis. Produced policy recommendations presented to academic and governmental audiences.</li>
+                    </ul>
+                </div>
+                <div class="education-item">
+                    <h3>Bachelor of Computer Science, Information Systems</h3>
+                    <p>Gunadarma University, Depok | Graduated: 2016 | GPA: 3.40/4.00</p>
+                    <ul>
+                        <li><strong>Capstone Project:</strong> D’Kopi Manis Store Sales Management Application – a POS system with real-time analytic and inventory tracking.</li>
+                        <li><strong>Approach:</strong> Applied modular PHP/SQL design, encryption protocols, and usability testing to ensure scalability and security for SMEs.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>SKILLS: OPERATIONAL CAPABILITIES</h2>
+            <div class="section-content skills-grid">
+                <div class="skill-category">
+                    <h3>Front-end Development</h3>
+                    <ul>
+                        <li>Luau (Roblox Lua)</li>
+                        <li>React</li>
+                        <li>TypeScript</li>
+                        <li>JavaScript</li>
+                        <li>HTML5</li>
+                        <li>CSS3</li>
+                        <li>TailwindCSS</li>
+                        <li>Responsive & Cross-Platform UI</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Back-end & Database</h3>
+                    <ul>
+                        <li>PHP</li>
+                        <li>SQL</li>
+                        <li>Oracle</li>
+                        <li>REST APIs</li>
+                        <li>API Integration</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>QA & Testing</h3>
+                    <ul>
+                        <li>Manual Testing</li>
+                        <li>Automated Testing</li>
+                        <li>Regression</li>
+                        <li>API Testing</li>
+                        <li>Performance Testing</li>
+                        <li>Security Testing</li>
+                        <li>Test Planning</li>
+                        <li>Agile QA</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Automation Tools</h3>
+                    <ul>
+                        <li>Selenium</li>
+                        <li>Appium</li>
+                        <li>JMeter</li>
+                        <li>Jenkins</li>
+                        <li>Postman</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Collaboration Tools</h3>
+                    <ul>
+                        <li>Jira</li>
+                        <li>Confluence</li>
+                        <li>Git</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Localization & Translation</h3>
+                    <ul>
+                        <li>English – Indonesian technical, legal, and business translation</li>
+                        <li>SDL Trados</li>
+                        <li>CAT Tools</li>
+                        <li>QA for localized UI/UX</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Methodologies</h3>
+                    <ul>
+                        <li>Agile/Scrum</li>
+                        <li>CI/CD</li>
+                        <li>Shift-Left Testing</li>
+                        <li>SDLC/STLC Best Practices</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Languages</h3>
+                    <ul>
+                        <li>Indonesian (Native)</li>
+                        <li>English (C1)</li>
+                        <li>Korean (B2)</li>
+                        <li>French (B1)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="certifications">
+            <h2>CERTIFICATIONS: VALIDATED PROTOCOLS</h2>
+            <div class="section-content">
+                <ul class="certifications-list">
+                    <li>IELTS – 8.0/9.0, British Council (2022)</li>
+                    <li>TOEFL ITP – 610/677, Golden English (2021)</li>
+                    <li>Microsoft Technology Associate: Database Fundamentals, Microsoft (2015)</li>
+                    <li>Visual C++, Gunadarma University (2014)</li>
+                    <li>Android and Mobile Commerce Unify, Gunadarma University (2013)</li>
+                    <li>Borderless Networks Technology, CISCO (2013)</li>
+                    <li>Gender, Family, and Social Change in Contemporary South Korea, Yonsei University (2021)</li>
+                    <li>AUSINDO Quiz, Australian Embassy (2010)</li>
+                    <li>Computer Course of General Programs, 37 Senior High School Jakarta (2009)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="project-showcase">
+            <h2>PROJECT SHOWCASE: ADVANCED SYSTEM INTERFACES</h2>
+            <div class="section-content project-grid">
+                <!-- Project 1: Quantum UI Framework (Front-End) -->
+                <a href="project-quantum-ui.html" class="project-card" onclick="playButtonClickSound()">
+                    <h3>Quantum UI Framework</h3>
+                    <p>A high-performance, secure UI framework for mission-critical applications.</p>
+                    <p><em>Role: Senior Front-End Developer (Roblox Corporation)</em></p>
+                </a>
+
+                <!-- Project 2: Sentinel QA Automation (QA) -->
+                <a href="project-sentinel-qa.html" class="project-card" onclick="playButtonClickSound()">
+                    <h3>Sentinel QA Automation Suite</h3>
+                    <p>AI-powered test automation for zero-defect deployment pipelines.</p>
+                    <p><em>Role: Senior QA Engineer (TOMPS - Telkom Indonesia)</em></p>
+                </a>
+
+                <!-- Project 3: NeuralNet Data Visualizer (Front-End) -->
+                <a href="project-neural-net-viz.html" class="project-card" onclick="playButtonClickSound()">
+                    <h3>NeuralNet Data Visualizer</h3>
+                    <p>Interactive dashboard for real-time neural network performance monitoring.</p>
+                    <p><em>Role: Senior Front-End Developer (Kredivo - FinAccel)</em></p>
+                </a>
+
+                <!-- Project 4: CyberSec Protocol Validator (QA) -->
+                <a href="project-cybersec-validator.html" class="project-card" onclick="playButtonClickSound()">
+                    <h3>CyberSec Protocol Validator</h3>
+                    <p>Automated security testing and compliance validation for network protocols.</p>
+                    <p><em>Role: Senior QA Engineer (Bank BRI - PT. Lawencon Internasional)</em></p>
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 DINANDA DIADESKA DIARA. All Rights Reserved. // System Online // Data Stream Active</p>
+        </div>
+    </footer>
+
+    <script>
+        // Audio elements
+        const systemBootSound = document.getElementById('systemBootSound');
+        const typingSound = document.getElementById('typingSound');
+        const glitchSound = document.getElementById('glitchSound');
+        const buttonClickSound = document.getElementById('buttonClickSound');
+        const audioOverlay = document.getElementById('audio-overlay');
+        const enterButton = document.getElementById('enter-button');
+
+        function playSound(audioElement) {
+            if (audioElement) {
+                audioElement.currentTime = 0; // Rewind to start
+                audioElement.play().catch(e => console.log("Audio play failed:", e)); // Catch potential errors
+            }
+        }
+
+        function playButtonClickSound() {
+            playSound(buttonClickSound);
+        }
+
+        // Initial audio playback on user interaction
+        enterButton.addEventListener('click', () => {
+            playSound(systemBootSound);
+            audioOverlay.style.opacity = '0';
+            audioOverlay.style.pointerEvents = 'none';
+            setTimeout(() => {
+                audioOverlay.style.display = 'none';
+                initializePageAudio();
+            }, 1000); // Fade out duration
+        });
+
+        function initializePageAudio() {
+            // Play typing sound for a short duration
+            typingSound.volume = 0.5;
+            playSound(typingSound);
+            setTimeout(() => {
+                typingSound.pause();
+            }, 3000); // Stop after 3 seconds, matching animation duration
+
+            // Play glitch sound on header load
+            glitchSound.volume = 0.3; // Lower volume for background effect
+            glitchSound.loop = true;
+            playSound(glitchSound);
+        }
+
+        // JavaScript for the typing effect in the header subtitle
+        document.addEventListener('DOMContentLoaded', function() {
+            const subtitle = document.querySelector('.subtitle');
+            subtitle.style.width = '100%'; // Trigger typing animation
+        });
+    </script>
+
+</body>
+</html>
